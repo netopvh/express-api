@@ -11,6 +11,7 @@ require('./databases');
 
 const routes = require('./resource/routes/api');
 const sentryConfig = require('./config/sentry');
+const swagger = require('./resource/swagger');
 
 class App {
   constructor() {
@@ -34,13 +35,14 @@ class App {
   routes() {
     this.server.use(routes);
     this.server.use(Sentry.Handlers.errorHandler());
+    if (process.env.NODE_ENV === 'development') this.server.use(...swagger);
   }
 
   exceptionHandler() {
     this.server.use(async (err, req, res, next) => {
       if (process.env.NODE_ENV === 'development') {
-        const erros = await new Youch(err, req).toJSON();
-        return res.status(500).json(erros);
+        const errors = await new Youch(err, req).toJSON();
+        return res.status(500).json(errors);
       }
 
       return res.status(500).json({ error: 'Server Error' });

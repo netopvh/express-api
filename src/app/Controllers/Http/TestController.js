@@ -1,9 +1,14 @@
 const Queue = require('../../../lib/Queue');
 
 class TestController {
-  index(req, res) {
-    Queue.add('TestJob', { msg: 'Parametro que enviei pra fila' });
+  async index(req, res) {
 
+
+
+
+
+
+    // Queue.add('TestJob', { msg: 'msg queue' });
     return res.status(200).json({ msg: 'Working' });
   }
 }

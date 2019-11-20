@@ -1,3 +1,4 @@
+const swaggerUi = require('swagger-ui-express');
 const config = require('../../config/swagger');
 const tags = require('./tags');
 
@@ -23,4 +24,8 @@ const paths = {
   '/users': { get: users.index },
 };
 
-module.exports = { ...config, paths, tags, definitions: models };
+module.exports = [
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup({ ...config, paths, tags, definitions: models }),
+];
