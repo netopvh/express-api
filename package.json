@@ -30,6 +30,8 @@
     "pg": "^7.12.0",
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.11.0",
+    "socker.io": "^0.0.0-alpha-beta",
+    "socket.io": "^2.3.0",
     "winston": "^3.2.1",
     "youch": "^2.0.10"
   },

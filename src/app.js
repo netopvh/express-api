@@ -10,15 +10,16 @@ require('express-async-errors');
 require('./databases');
 
 const routes = require('./resource/routes/api');
+const socket = require('../src/resource/routes/ws');
 const sentryConfig = require('./config/sentry');
 const swagger = require('./resource/swagger');
 
 class App {
   constructor() {
     this.server = express();
+    this.socket = socket;
 
     Sentry.init(sentryConfig);
-
     this.middlewares();
     this.routes();
     this.exceptionHandler();
@@ -50,4 +51,4 @@ class App {
   }
 }
 
-module.exports = new App().server;
+module.exports = new App();
