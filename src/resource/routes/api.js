@@ -12,6 +12,7 @@ router.use(require('./http/users'));
  */
 router.use(require('./http/auth/sessions'));
 
+
 const TestController = require('../../app/Controllers/Http/TestController');
 router.get('/test', TestController.index);
 
