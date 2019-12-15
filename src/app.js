@@ -5,6 +5,9 @@ const helmet = require('helmet');
 const cors = require('cors');
 const Sentry = require('@sentry/node');
 const Youch = require('youch');
+const redis = require('redis');
+const RateLimit = require('express-rate-limit');
+const RateLimitRedis = require('rate-limit-redis');
 
 require('express-async-errors');
 require('./databases');
@@ -36,6 +39,22 @@ class App {
   routes() {
     this.server.use(routes);
     this.server.use(Sentry.Handlers.errorHandler());
+
+    if (process.env.NODE_ENV !== 'development') {
+      this.server.use(
+        new RateLimit({
+          store: new RateLimitRedis({
+            client: redis.createClient({
+              host: process.env.REDIS_HOST,
+              port: process.env.REDIS_PORT,
+            }),
+          }),
+          windowMs: 1000 * 60 * 15, // 15 minutes
+          max: 10,
+        })
+      );
+    }
+
     if (process.env.NODE_ENV === 'development') this.server.use(...swagger);
   }
 
